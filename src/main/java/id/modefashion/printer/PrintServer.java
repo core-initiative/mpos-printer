@@ -44,7 +44,7 @@ public class PrintServer extends WebSocketServer {
 
   @Override
   public void onMessage(WebSocket conn, String message) {
-    logger.info("Received message");
+    logger.debug("================== NEW RECEIPT MESSAGE ==================");
     Type listType = new TypeToken<List<ReceiptLineData>>() {
     }.getType();
     if (message.contains("type")) {
@@ -56,6 +56,7 @@ public class PrintServer extends WebSocketServer {
       ReceiptWorkerString worker = new ReceiptWorkerString(data_string, this.config);
       worker.proceed();
     }
+    logger.debug("================== END RECEIPT MESSAGE ==================");
     // sendResponse("Success");
   }
 
@@ -72,6 +73,6 @@ public class PrintServer extends WebSocketServer {
 
   @Override
   public void onStart() {
-    logger.info("Websocket onStart...");
+    logger.info("================== PRINTER IS READY FOR PRINTING ===================");
   }
 }

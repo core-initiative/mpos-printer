@@ -35,8 +35,8 @@ public class ReceiptWorker {
       if (totalImg > 0) {
         totalLine += totalImg*15;
       }
-      logger.info("totalImg: {}", totalImg);
-      logger.info("totalLine: {}", totalLine);
+      logger.debug("totalImg: {}", totalImg);
+      logger.debug("totalLine: {}", totalLine);
       pf.setPaper(new ReceiptPaper(config, totalLine));
       job.setPrintable(new PosReceipt(data, config), pf);
       job.print();

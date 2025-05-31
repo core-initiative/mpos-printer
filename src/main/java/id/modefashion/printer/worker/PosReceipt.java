@@ -39,7 +39,7 @@ public class PosReceipt implements Printable {
 
   @Override
   public int print(Graphics g, PageFormat pf, int pageIndex) throws PrinterException, IllegalArgumentException {
-    logger.info("PRINT CALL");
+    logger.debug("START PRINT CALL: "+pageIndex);
 
     if (pageIndex > 0) {
       return NO_SUCH_PAGE;
@@ -54,11 +54,11 @@ public class PosReceipt implements Printable {
     int lineHeight = g2d.getFontMetrics().getHeight();
     int x = (int) pf.getImageableX();
     int y = (int) pf.getImageableY();
-    logger.info("before print, x: {}, y: {}", x, y);
-    logger.info("lineHeight from g2d: {}", lineHeight);
+    logger.debug("before print, x: {}, y: {}", x, y);
+    logger.debug("lineHeight from g2d: {}", lineHeight);
     int i = 0;
     for (ReceiptLineData line : this.data) {
-      System.out.printf("%d: %s\n", i++, line.getContent());
+      System.out.printf("%02d: %s\n", i++, line.getContent());
       if (line.getType().equalsIgnoreCase(ReceiptLineData.TYPE_TXT)) {
         g2d.drawString(line.getContent(), x, y);
         y += lineHeight;
@@ -83,10 +83,10 @@ public class PosReceipt implements Printable {
         // } catch (IOException e) {
         // e.printStackTrace();
         // }
-        logger.info("base64 contain meta-data image but skipped");
+        logger.debug("base64 contain meta-data image but skipped");
       } else if (line.getType().equalsIgnoreCase(ReceiptLineData.TYPE_BARCODE)) {
         // do print with barcode libary zxing in here
-        logger.info("contain meta-data barcode");
+        logger.debug("contain meta-data barcode");
         Code128Writer barcodeWriter = new Code128Writer();
         BitMatrix bitMatrix = barcodeWriter.encode(line.getContent(),
             BarcodeFormat.CODE_128, 400, 50);
@@ -110,7 +110,7 @@ public class PosReceipt implements Printable {
       }
     }
 
-    logger.info("END PRINTER CALL");
+    logger.debug("END PRINTER CALL: "+pageIndex);
 
     return PAGE_EXISTS;
   }
