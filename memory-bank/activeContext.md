@@ -1,20 +1,28 @@
 # Active Context: mpos-printer
 
 ## Current Work Focus
-- Initializing project documentation (Memory Bank)
-- Reviewing and documenting project structure, dependencies, and architecture
+- Added a Swing-based GUI as the main entry point (PrinterGuiApp)
+- Integrated a Start/Stop button for the WebSocket server
+- Implemented a real-time, scrollable log area in the GUI
+- Added a configuration menu for editing printer.properties
+- Ensured all logs from all classes are routed to the GUI log area
+- Replaced all System.out.print calls with logger calls
+- Registered LogbackTextAreaAppender as early as possible in App.java
+- Ensured logger output from all threads and startup code appears in the GUI
 
 ## Recent Changes
-- Created core Memory Bank files: projectbrief.md, productContext.md, systemPatterns.md, techContext.md
-- Analyzed pom.xml and source structure
+- Refactored App.java to register the GUI log appender before launching the GUI
+- Replaced direct console output with logger calls in PosReceipt and PosReceiptString
+- Confirmed logger output is visible in the GUI log area
+- Confirmed configuration changes are possible via the GUI
 
 ## Next Steps
-- Document project progress and known issues in progress.md
-- Review and update Java version and dependencies as needed
-- Improve/modernize testing (consider JUnit 5)
-- Add or update README with usage and configuration instructions
+- Further polish the GUI (e.g., log filtering, error highlighting)
+- Add more configuration options if needed
+- Consider removing the console appender if only GUI logging is desired
+- Test on different platforms and Java versions (Java 8+ required)
 
 ## Active Decisions and Considerations
-- Maintain Java 7 compatibility for now, but plan for upgrade
-- Ensure all documentation is up-to-date for maintainability
-- Focus on extensibility and reliability in future changes 
+- The GUI is now the default entry point, replacing the CLI
+- All logging is centralized and routed to the GUI for better user experience
+- Java 8+ is now required for building and running the project 
