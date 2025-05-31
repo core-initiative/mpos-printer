@@ -3,19 +3,11 @@ package id.modefashion.printer.worker;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
@@ -58,7 +50,7 @@ public class PosReceipt implements Printable {
     logger.debug("lineHeight from g2d: {}", lineHeight);
     int i = 0;
     for (ReceiptLineData line : this.data) {
-      System.out.printf("%02d: %s\n", i++, line.getContent());
+      logger.info(String.format("%02d: %s", i++, line.getContent()));
       if (line.getType().equalsIgnoreCase(ReceiptLineData.TYPE_TXT)) {
         g2d.drawString(line.getContent(), x, y);
         y += lineHeight;

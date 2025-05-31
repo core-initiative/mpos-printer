@@ -1,27 +1,35 @@
 package id.modefashion.printer;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.slf4j.Logger;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.spi.ILoggingEvent;
 import org.slf4j.LoggerFactory;
+import java.util.Iterator;
 
-/**
- * MPOS Java Printer
- * 
- * @author: purwaren
- */
 public class App {
-  private static final Logger logger = LoggerFactory.getLogger(App.class);
   public static void main(String[] args) {
-
-    try {
-      logger.info("Initialize application....");
-      PropertiesConfiguration config = new PropertiesConfiguration("printer.properties");
-      PrintServer server = new PrintServer(config);
-      server.start();
-      logger.info("Websocket server is runnig on port {}", config.getInt("printer.port"));
-    } catch (ConfigurationException e) {
-      e.printStackTrace();
-    } 
+    // Register the GUI log appender as early as possible
+    LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+    Logger rootLogger = context.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+    boolean alreadyAdded = false;
+    Iterator<ch.qos.logback.core.Appender<ILoggingEvent>> it = rootLogger.iteratorForAppenders();
+    while (it.hasNext()) {
+      ch.qos.logback.core.Appender<ILoggingEvent> appender = it.next();
+      if (appender instanceof LogbackTextAreaAppender) {
+        alreadyAdded = true;
+        break;
+      }
+    }
+    if (!alreadyAdded) {
+      LogbackTextAreaAppender guiAppender = new LogbackTextAreaAppender();
+      guiAppender.setContext(context);
+      guiAppender.start();
+      rootLogger.addAppender(guiAppender);
+    }
+    // Launch the GUI
+    javax.swing.SwingUtilities.invokeLater(() -> {
+      PrinterGuiApp app = new PrinterGuiApp();
+      app.setVisible(true);
+    });
   }
 }

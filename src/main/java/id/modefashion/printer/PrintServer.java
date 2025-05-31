@@ -28,7 +28,7 @@ public class PrintServer extends WebSocketServer {
 
   public PrintServer(PropertiesConfiguration config) {
     super(new InetSocketAddress(config.getInt("printer.port")));
-    connections = Collections.synchronizedSet(new HashSet<WebSocket>());
+    this.connections = Collections.synchronizedSet(new HashSet<WebSocket>());
     this.config = config;
   }
 
@@ -59,12 +59,6 @@ public class PrintServer extends WebSocketServer {
     logger.debug("================== END RECEIPT MESSAGE ==================");
     // sendResponse("Success");
   }
-
-  // private void sendResponse(String message) {
-  // for (WebSocket conn : connections) {
-  // conn.send(message);
-  // }
-  // }
 
   @Override
   public void onError(WebSocket conn, Exception ex) {

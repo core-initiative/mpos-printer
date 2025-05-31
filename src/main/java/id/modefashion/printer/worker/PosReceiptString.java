@@ -43,7 +43,7 @@ public class PosReceiptString implements Printable {
     StringTokenizer st = new StringTokenizer(this.data, "#");
     String line = null;
     while (st.hasMoreTokens()) {
-      System.out.printf("%d: %s\n", 0, line);
+      logger.info(String.format("%d: %s", 0, line));
       line = st.nextToken();
       if (line.length() > 0)
         g2d.drawString(line, x, y);
